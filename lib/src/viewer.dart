@@ -120,6 +120,7 @@ class _PDFViewerState extends State<PDFViewer> {
 
   @override
   Widget build(BuildContext context) {
+    var _lastPageNumber = _pageNumber;
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -147,24 +148,30 @@ class _PDFViewerState extends State<PDFViewer> {
                 children: <Widget>[
                   Expanded(
                     child: IconButton(
-                      icon: Icon(Icons.first_page),
+                      icon: Icon(Icons.first_page,
+                          color: _lastPageNumber > 1 ? Colors.black : Colors.grey),
                       tooltip: widget.tooltip.first,
                       onPressed: () {
                         _pageNumber = 1;
-                        _loadPage();
+                        if(_lastPageNumber > 1){
+                          _loadPage();
+                        }
                       },
                     ),
                   ),
                   Expanded(
                     child: IconButton(
-                      icon: Icon(Icons.chevron_left),
+                      icon: Icon(Icons.chevron_left,
+                          color: _lastPageNumber > 1 ? Colors.black : Colors.grey),
                       tooltip: widget.tooltip.previous,
                       onPressed: () {
                         _pageNumber--;
                         if (1 > _pageNumber) {
                           _pageNumber = 1;
                         }
-                        _loadPage();
+                        if(_lastPageNumber > 1){
+                          _loadPage();
+                        }
                       },
                     ),
                   ),
@@ -173,24 +180,30 @@ class _PDFViewerState extends State<PDFViewer> {
                       : SizedBox(width: 1),
                   Expanded(
                     child: IconButton(
-                      icon: Icon(Icons.chevron_right),
+                      icon: Icon(Icons.chevron_right,
+                          color: _lastPageNumber < widget.document.count ? Colors.black : Colors.grey),
                       tooltip: widget.tooltip.next,
                       onPressed: () {
                         _pageNumber++;
                         if (widget.document.count < _pageNumber) {
                           _pageNumber = widget.document.count;
                         }
-                        _loadPage();
+                        if(_lastPageNumber < widget.document.count){
+                          _loadPage();
+                        }
                       },
                     ),
                   ),
                   Expanded(
                     child: IconButton(
-                      icon: Icon(Icons.last_page),
+                      icon: Icon(Icons.last_page,
+                          color: _lastPageNumber < widget.document.count ? Colors.black : Colors.grey),
                       tooltip: widget.tooltip.last,
                       onPressed: () {
                         _pageNumber = widget.document.count;
-                        _loadPage();
+                        if(_lastPageNumber < widget.document.count){
+                          _loadPage();
+                        }
                       },
                     ),
                   ),
